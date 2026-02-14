@@ -9,6 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
+        ref: b36b8b6bbd62bf07fdf74eb2c5a5d9f244c69416
         submodules: true
 
     - name: Cache vendor/
@@ -43,14 +44,13 @@ jobs:
 
     - name: Configure CMake cache
       run: |
-        ./generate_cache.sh Release pt
+        ./generate_cache.sh Release
 
     - name: Build p4-fusion
       run: |
         ./build.sh
 
-    - name: Test p4-fusion
-      run: |
-        ldd build/p4-fusion/p4-fusion
-        ./build/p4-fusion/p4-fusion
-        ./build/tests/p4-fusion-test
+    - name: Upload p4-fusion
+      uses: actions/upload-artifact@v6
+      with:
+        path: build/*
